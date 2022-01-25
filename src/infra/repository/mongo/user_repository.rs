@@ -25,7 +25,7 @@ pub mod repository {
 
     #[async_trait]
     impl AppUserRepository for UserRepository {
-        async fn store(self: &Self) -> Result<Vec<User>> {
+        async fn store(&mut self) -> Result<Vec<User>> {
             let mut result: Vec<User> = Vec::new();
             let mut cursor = self.collection.find(None, None).await?;
             while let Some(user) = cursor.try_next().await? {
