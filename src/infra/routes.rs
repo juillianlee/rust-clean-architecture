@@ -1,9 +1,12 @@
 pub mod user_routes;
 
 pub mod routes {
-    use std::convert::Infallible;
-    use warp::{Rejection, Filter};
-    use crate::{infra::{db::DB, routes::user_routes::user_routes}, error};
+    use crate::{
+        error,
+        infra::{db::DB, routes::user_routes::user_routes},
+    };
+    use std::{convert::Infallible, env};
+    use warp::{Filter, Rejection};
 
     pub type Result<T> = std::result::Result<T, error::Error>;
     pub type WebResult<T> = std::result::Result<T, Rejection>;
@@ -15,8 +18,13 @@ pub mod routes {
 
         let routes = user_routes.recover(error::handle_rejection);
 
-        print!("Started on port 8080");
-        warp::serve(routes).run(([0, 0, 0, 0], 8080)).await;
+        let port: u16 = env::var("PORT")
+            .unwrap_or(String::from("8080"))
+            .parse()
+            .unwrap();
+
+        println!("Started on port {}", port);
+        warp::serve(routes).run(([0, 0, 0, 0], port)).await;
         Ok(())
     }
 
