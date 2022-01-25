@@ -1,6 +1,6 @@
-use crate::Result;
-use mongodb::{options::ClientOptions, Database};
 
+use mongodb::{options::ClientOptions, Database};
+use crate::infra::{routes::{routes::Result}};
 #[derive(Clone, Debug)]
 pub struct DB {
     pub database: Database,

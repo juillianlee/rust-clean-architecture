@@ -1,2 +1,2 @@
-pub mod user_repository;
+pub mod mongo;
 pub mod repository;
