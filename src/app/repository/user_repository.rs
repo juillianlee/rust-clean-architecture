@@ -5,7 +5,7 @@ pub mod repository {
     
     #[async_trait]
     pub trait IUserRepository {
-        async fn store(&mut self)  -> Result<Vec<User>>;
+        async fn store(&mut self, user: &mut User)  -> Result<()>;
         async fn list(&self) -> Result<Vec<User>>;
     }
 }

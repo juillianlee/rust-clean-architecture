@@ -1,5 +1,8 @@
 pub mod repository {
+    use std::process::id;
+
     use async_trait::async_trait;
+    use uuid::Uuid;
 
     use crate::app::{
         domain::user::User, repository::user_repository::repository::IUserRepository,
@@ -7,7 +10,7 @@ pub mod repository {
     use crate::Result;
 
     #[derive(Clone, Debug)]
-    struct UserRepository {
+    pub struct UserRepository {
         users: Vec<User>,
     }
 
@@ -19,13 +22,10 @@ pub mod repository {
 
     #[async_trait]
     impl IUserRepository for UserRepository {
-        async fn store(&mut self) -> Result<Vec<User>> {
-            self.users.push(User {
-                id: String::from("iasjida"),
-                name: String::from("iasjida"),
-                email: String::from("iasjida"),
-            });
-            Ok(self.users.clone())
+        async fn store(&mut self, user: &mut User) -> Result<()> {
+            user.id = Uuid::new_v4().to_string();
+            self.users.push(user.clone());
+            Ok(())
         }
 
         async fn list(self: &Self) -> Result<Vec<User>> {

@@ -3,7 +3,7 @@ pub mod user_routes;
 pub mod routes {
     use crate::{
         error,
-        infra::{db::DB, routes::user_routes::user_routes},
+        infra::{db::DB},
     };
     use std::{convert::Infallible, env};
     use warp::{Filter, Rejection};
@@ -14,9 +14,9 @@ pub mod routes {
     pub async fn init() -> Result<()> {
         let db = DB::init().await?;
 
-        let user_routes = user_routes::make(db.clone());
+        // let user_routes = user_routes::make(db.clone());
 
-        let routes = user_routes.recover(error::handle_rejection);
+        // let routes = user_routes.recover(error::handle_rejection);
 
         let port: u16 = env::var("PORT")
             .unwrap_or(String::from("8080"))
@@ -24,7 +24,7 @@ pub mod routes {
             .unwrap();
 
         println!("Started on port {}", port);
-        warp::serve(routes).run(([0, 0, 0, 0], port)).await;
+        // warp::serve(routes).run(([0, 0, 0, 0], port)).await;
         Ok(())
     }
 
